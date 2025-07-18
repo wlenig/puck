@@ -14,7 +14,7 @@ export type UsePuckData<
   UserConfig extends Config = Config,
   G extends UserGenerics<UserConfig> = UserGenerics<UserConfig>
 > = {
-  appState: AppState;
+  appState: G["UserPublicAppState"];
   config: UserConfig;
   dispatch: AppStore["dispatch"];
   getPermissions: GetPermissions<UserConfig>;
