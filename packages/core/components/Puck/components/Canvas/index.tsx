@@ -10,18 +10,21 @@ import {
 import { useAppStore } from "../../../../store";
 import { ViewportControls } from "../../../ViewportControls";
 import styles from "./styles.module.css";
-import { getClassNameFactory } from "../../../../lib";
+import { getClassNameFactory, useResetAutoZoom } from "../../../../lib";
 import { Preview } from "../Preview";
-import { getZoomConfig } from "../../../../lib/get-zoom-config";
 import { UiState } from "../../../../types";
 import { Loader } from "../../../Loader";
 import { useShallow } from "zustand/react/shallow";
+import { useCanvasFrame } from "../../../../lib/frame-context";
 
 const getClassName = getClassNameFactory("PuckCanvas", styles);
 
 const ZOOM_ON_CHANGE = true;
 
 export const Canvas = () => {
+  const { frameRef } = useCanvasFrame();
+  const resetAutoZoom = useResetAutoZoom(frameRef);
+
   const {
     dispatch,
     overrides,
@@ -41,17 +44,24 @@ export const Canvas = () => {
       iframe: s.iframe,
     }))
   );
-  const { leftSideBarVisible, rightSideBarVisible, viewports } = useAppStore(
+  const {
+    leftSideBarVisible,
+    rightSideBarVisible,
+    leftSideBarWidth,
+    rightSideBarWidth,
+    viewports,
+  } = useAppStore(
     useShallow((s) => ({
       leftSideBarVisible: s.state.ui.leftSideBarVisible,
       rightSideBarVisible: s.state.ui.rightSideBarVisible,
+      leftSideBarWidth: s.state.ui.leftSideBarWidth,
+      rightSideBarWidth: s.state.ui.rightSideBarWidth,
       viewports: s.state.ui.viewports,
     }))
   );
 
-  const frameRef = useRef<HTMLDivElement>(null);
-
   const [showTransition, setShowTransition] = useState(false);
+  const isResettingZoomRef = useRef(false);
 
   const defaultRender = useMemo<
     React.FunctionComponent<{ children?: ReactNode }>
@@ -80,26 +90,23 @@ export const Canvas = () => {
     return { width: 0, height: 0 };
   }, [frameRef]);
 
-  const resetAutoZoom = useCallback(
-    (newViewports: UiState["viewports"] = viewports) => {
-      if (frameRef.current) {
-        setZoomConfig(
-          getZoomConfig(
-            newViewports?.current,
-            frameRef.current,
-            zoomConfig.zoom
-          )
-        );
-      }
-    },
-    [frameRef, zoomConfig, viewports]
-  );
-
   // Auto zoom
   useEffect(() => {
-    setShowTransition(false);
-    resetAutoZoom(viewports);
-  }, [frameRef, leftSideBarVisible, rightSideBarVisible]);
+    resetAutoZoom({
+      isResettingRef: isResettingZoomRef,
+      setShowTransition,
+      showTransition: false,
+      viewports: viewports
+    });
+  }, [
+    frameRef,
+    leftSideBarVisible,
+    rightSideBarVisible,
+    leftSideBarWidth,
+    rightSideBarWidth,
+    resetAutoZoom,
+    viewports,
+  ]);
 
   // Constrain height
   useEffect(() => {
@@ -111,21 +118,28 @@ export const Canvas = () => {
         rootHeight: frameHeight / zoomConfig.zoom,
       });
     }
-  }, [zoomConfig.zoom]);
+  }, [zoomConfig.zoom, getFrameDimensions, setZoomConfig]);
 
   // Zoom whenever state changes, even if external driver
   useEffect(() => {
     if (ZOOM_ON_CHANGE) {
-      setShowTransition(true);
-      resetAutoZoom(viewports);
+      resetAutoZoom({
+        isResettingRef: isResettingZoomRef,
+        setShowTransition,
+        showTransition: true,
+        viewports: viewports
+      });
     }
-  }, [viewports.current.width]);
+  }, [viewports.current.width, resetAutoZoom, viewports]);
 
   // Resize based on window size
   useEffect(() => {
     const cb = () => {
-      setShowTransition(false);
-      resetAutoZoom();
+      resetAutoZoom({
+        isResettingRef: isResettingZoomRef,
+        setShowTransition,
+        showTransition: false
+      });
     };
 
     window.addEventListener("resize", cb);
@@ -133,7 +147,7 @@ export const Canvas = () => {
     return () => {
       window.removeEventListener("resize", cb);
     };
-  }, []);
+  }, [resetAutoZoom]);
 
   const [showLoader, setShowLoader] = useState(false);
 
@@ -179,7 +193,12 @@ export const Canvas = () => {
               setUi(newUi);
 
               if (ZOOM_ON_CHANGE) {
-                resetAutoZoom({ ...viewports, current: uiViewport });
+                resetAutoZoom({
+                isResettingRef: isResettingZoomRef,
+                setShowTransition,
+                showTransition: true,
+                viewports: { ...viewports, current: uiViewport }
+              });
               }
             }}
             onZoom={(zoom) => {
@@ -205,12 +224,9 @@ export const Canvas = () => {
           suppressHydrationWarning // Suppress hydration warning as frame is not visible until after load
           id="puck-canvas-root"
           onTransitionEnd={() => {
-            window.dispatchEvent(
-              new CustomEvent("viewportchange", {
-                bubbles: true,
-                cancelable: false,
-              })
-            );
+            resetAutoZoom({
+              isResettingRef: isResettingZoomRef
+            });
           }}
         >
           <CustomPreview>
