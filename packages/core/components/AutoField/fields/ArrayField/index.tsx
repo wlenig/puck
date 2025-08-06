@@ -27,6 +27,7 @@ import { populateIds } from "../../../../lib/data/populate-ids";
 import { defaultSlots } from "../../../../lib/data/default-slots";
 import { getDeep } from "../../../../lib/data/get-deep";
 import { SubField } from "../../subfield";
+import fdeq from "fast-deep-equal";
 
 const getClassName = getClassNameFactory("ArrayField", styles);
 const getClassNameItem = getClassNameFactory("ArrayFieldItem", styles);
@@ -315,6 +316,26 @@ export const ArrayField = ({
     },
     [regenerateArrayState, setUi, mapArrayStateToUi, onChange, setLocalState]
   );
+
+  // Keep in sync with undo/redo history
+  useEffect(() => {
+    return appStoreApi.subscribe(
+      ({ selectedItem }) => {
+        const props = (name ? selectedItem?.props : {}) ?? {};
+
+        return name ? getDeep(props, name) : [];
+      },
+      (val) => {
+        if (!fdeq(val, valueRef.current)) {
+          valueRef.current = val;
+
+          const newArrayState = regenerateArrayState(valueRef.current);
+          setUi(mapArrayStateToUi(newArrayState), false);
+          setLocalState(newArrayState);
+        }
+      }
+    );
+  }, [appStoreApi]);
 
   if (field.type !== "array" || !field.arrayFields) {
     return null;
