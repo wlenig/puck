@@ -332,6 +332,8 @@ export const ArrayField = ({
     >
       <SortableProvider
         onDragStart={(id) => {
+          valueRef.current = getValue();
+
           setDraggedItem(id);
 
           syncCurrentIndexes();
@@ -352,9 +354,7 @@ export const ArrayField = ({
             return;
           }
 
-          const value = getValue();
-
-          const newValue = reorder(value, move.source, move.target);
+          const newValue = reorder(valueRef.current, move.source, move.target);
 
           const newArrayStateItems: ItemWithId[] = reorder(
             arrayState.items,
