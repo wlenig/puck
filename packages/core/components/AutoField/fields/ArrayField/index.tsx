@@ -319,6 +319,17 @@ export const ArrayField = ({
     [regenerateArrayState, setUi, mapArrayStateToUi, onChange, setLocalState]
   );
 
+  const reset = useCallback(
+    (value: object[]) => {
+      valueRef.current = value;
+
+      const newArrayState = regenerateArrayState(valueRef.current);
+      setUi(mapArrayStateToUi(newArrayState), false);
+      setLocalState(newArrayState);
+    },
+    [getValue, regenerateArrayState, mapArrayStateToUi, setLocalState]
+  );
+
   // Keep in sync with undo/redo history
   useEffect(() => {
     return appStoreApi.subscribe(
@@ -329,15 +340,16 @@ export const ArrayField = ({
       },
       (val) => {
         if (!fdeq(val, valueRef.current)) {
-          valueRef.current = val;
-
-          const newArrayState = regenerateArrayState(valueRef.current);
-          setUi(mapArrayStateToUi(newArrayState), false);
-          setLocalState(newArrayState);
+          reset(val);
         }
       }
     );
-  }, [appStoreApi]);
+  }, [appStoreApi, name]);
+
+  // Capture nested reorders, as the deep name will change
+  useEffect(() => {
+    reset(getValue());
+  }, [reset, getValue, name]);
 
   if (field.type !== "array" || !field.arrayFields) {
     return null;
