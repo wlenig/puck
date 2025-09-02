@@ -172,20 +172,22 @@ export const ArrayField = ({
   const getArrayState = useCallback(() => {
     const { state } = appStoreApi.getState();
 
+    const thisState = state.ui.arrayState[id];
+
+    if (thisState?.items?.length) return thisState;
+
     const value = getValue();
 
-    return (
-      state.ui.arrayState[id] || {
-        items: Array.from(value || []).map((item, idx) => {
-          return {
-            _originalIndex: idx,
-            _currentIndex: idx,
-            _arrayId: `${id}-${idx}`,
-          };
-        }),
-        openId: "",
-      }
-    );
+    return {
+      items: Array.from(value || []).map((item, idx) => {
+        return {
+          _originalIndex: idx,
+          _currentIndex: idx,
+          _arrayId: `${id}-${idx}`,
+        };
+      }),
+      openId: "",
+    };
   }, [appStoreApi]);
 
   const numItems = useAppStore((s) => {
