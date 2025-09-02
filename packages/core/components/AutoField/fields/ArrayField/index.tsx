@@ -166,7 +166,7 @@ export const ArrayField = ({
     const { selectedItem } = appStoreApi.getState();
     const props = (name ? selectedItem?.props : {}) ?? {};
 
-    return name ? getDeep(props, name) : [];
+    return name ? getDeep(props, name) ?? [] : [];
   }, [appStoreApi, name, value]);
 
   const getArrayState = useCallback(() => {
