@@ -191,11 +191,11 @@ export const ArrayField = ({
   }, [appStoreApi]);
 
   const numItems = useAppStore((s) => {
-    const value: Array<object> = name
-      ? appStoreApi.getState().selectedItem?.props[name] ?? []
-      : [];
+    const { selectedItem } = s;
 
-    return value.length;
+    const props = (name ? selectedItem?.props : {}) ?? {};
+
+    return (name ? getDeep(props, name) ?? [] : []).length;
   });
 
   const [mirror, setLocalState] = useState(getArrayState());
