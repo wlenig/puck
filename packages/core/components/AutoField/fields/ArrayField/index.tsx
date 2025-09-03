@@ -335,6 +335,8 @@ export const ArrayField = ({
 
   // Keep in sync with undo/redo history
   useEffect(() => {
+    if (value) return;
+
     return appStoreApi.subscribe(
       ({ selectedItem }) => {
         const props = (name ? selectedItem?.props : {}) ?? {};
@@ -347,7 +349,7 @@ export const ArrayField = ({
         }
       }
     );
-  }, [appStoreApi, name]);
+  }, [appStoreApi, name, value]);
 
   // Capture nested reorders, as the deep name will change
   useEffect(() => {
