@@ -46,6 +46,7 @@ const ArrayFieldItemInternal = ({
   name,
   localName,
   getValue,
+  value,
 }: {
   id: string;
   arrayId: string;
@@ -60,6 +61,7 @@ const ArrayFieldItemInternal = ({
   name?: string;
   localName?: string;
   getValue: () => any;
+  value?: any;
 }) => {
   // NB this will prevent array fields from being used outside of Puck
   const isExpanded = useAppStore((s) => {
@@ -67,7 +69,7 @@ const ArrayFieldItemInternal = ({
   });
 
   const itemSummary = useAppStore(() => {
-    const data = getValue();
+    const data = value ?? getValue();
 
     if (data && field.getItemSummary) {
       return field.getItemSummary(data, index);
@@ -131,6 +133,7 @@ const ArrayFieldItemInternal = ({
                       field={subField}
                       onChange={onChange}
                       forceReadOnly={!canEdit}
+                      value={value?.[index]}
                     />
                   );
                 })}
@@ -188,7 +191,7 @@ export const ArrayField = ({
       }),
       openId: "",
     };
-  }, [appStoreApi]);
+  }, [appStoreApi, id, getValue]);
 
   const numItems = useAppStore((s) => {
     const { selectedItem } = s;
@@ -442,6 +445,7 @@ export const ArrayField = ({
                     field={field}
                     name={name}
                     localName={localName}
+                    value={value}
                     getValue={() => {
                       const value = getValue();
                       return value[_currentIndex];

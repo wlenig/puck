@@ -35,7 +35,7 @@ export const ObjectField = ({
     const { selectedItem } = appStoreApi.getState();
     const props = (name ? selectedItem?.props : {}) ?? {};
 
-    return name ? getDeep(props, name) : [];
+    return name ? getDeep(props, name) : {};
   }, [appStoreApi, name, value]);
 
   if (field.type !== "object" || !field.objectFields) {
@@ -64,12 +64,11 @@ export const ObjectField = ({
                 localName={localName}
                 field={subField}
                 forceReadOnly={!canEdit}
+                value={value}
                 onChange={(subValue, ui, subName) => {
                   const value = getValue();
 
-                  if (value && name) {
-                    onChange({ ...value, [subName]: subValue }, ui);
-                  }
+                  onChange({ ...value, [subName]: subValue }, ui);
                 }}
               />
             );

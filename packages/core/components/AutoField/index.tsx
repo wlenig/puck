@@ -138,13 +138,11 @@ const defaultFields = {
 function AutoFieldInternal<
   ValueType = any,
   FieldType extends FieldNoLabel<ValueType> = FieldNoLabel<ValueType>
->({
-  provideValue,
-  ...props
-}: FieldPropsInternalOptional<ValueType, FieldType> & {
-  Label?: React.FC<FieldLabelPropsInternal>;
-  provideValue?: boolean;
-}) {
+>(
+  props: FieldPropsInternalOptional<ValueType, FieldType> & {
+    Label?: React.FC<FieldLabelPropsInternal>;
+  }
+) {
   const dispatch = useAppStore((s) => s.dispatch);
   const overrides = useAppStore((s) => s.overrides);
   const readOnly = useAppStore(useShallow((s) => s.selectedItem?.readOnly));
@@ -254,10 +252,6 @@ function AutoFieldInternal<
       value={{
         readOnlyFields: nestedFieldContext.readOnlyFields || readOnly || {},
         localName: nestedFieldContext.localName ?? mergedProps.name,
-        value:
-          provideValue && mergedProps.name
-            ? { [mergedProps.name]: mergedProps.value }
-            : undefined, // Optionally provide value if this is used outside of app fields (i.e. external field filters)
       }}
     >
       <div
@@ -288,7 +282,6 @@ export function AutoFieldPrivate<
   props: Omit<FieldPropsInternalOptional<ValueType, FieldType>, "value"> & {
     Label?: React.FC<FieldLabelPropsInternal>;
     value?: any;
-    provideValue?: boolean;
   }
 ) {
   const isFocused = useAppStore((s) => s.state.ui.field.focus === props.name);
@@ -378,10 +371,6 @@ export function AutoField<
   }
 
   return (
-    <AutoFieldInternal<ValueType, FieldType>
-      {...props}
-      Label={DefaultLabel}
-      provideValue
-    />
+    <AutoFieldInternal<ValueType, FieldType> {...props} Label={DefaultLabel} />
   );
 }

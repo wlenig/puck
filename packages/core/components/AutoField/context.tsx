@@ -23,13 +23,11 @@ export const NestedFieldProvider = ({
   subName,
   wildcardName = name,
   readOnlyFields,
-  value,
 }: PropsWithChildren<{
   name: string;
   subName: string;
   wildcardName?: string;
   readOnlyFields: Partial<Record<string | number | symbol, boolean>>;
-  value?: any;
 }>) => {
   const subPath = `${name}.${subName}`;
   const wildcardSubPath = `${wildcardName}.${subName}`;
@@ -65,7 +63,7 @@ export const NestedFieldProvider = ({
 
   return (
     <NestedFieldContext.Provider
-      value={{ readOnlyFields: subReadOnlyFields, localName: subName, value }}
+      value={{ readOnlyFields: subReadOnlyFields, localName: subName }}
     >
       {children}
     </NestedFieldContext.Provider>

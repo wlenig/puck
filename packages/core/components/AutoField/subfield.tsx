@@ -14,6 +14,7 @@ const SubFieldInternal = ({
   localName,
   onChange,
   forceReadOnly,
+  value,
 }: {
   id: string;
   index?: number;
@@ -23,9 +24,10 @@ const SubFieldInternal = ({
   localName?: string;
   onChange: (val: any, ui: any, subName: string) => void;
   forceReadOnly: boolean;
+  value?: any;
 }) => {
   const indexName = typeof index !== "undefined" ? `${name}[${index}]` : name;
-  const subPath = `${indexName}.${subName}`;
+  const subPath = name ? `${indexName}.${subName}` : subName;
   const localIndexName =
     typeof index !== "undefined"
       ? `${localName}[${index}]`
@@ -35,7 +37,7 @@ const SubFieldInternal = ({
   const localSubPath = `${localIndexName}.${subName}`;
   const localWildcardSubPath = `${localWildcardName}.${subName}`;
 
-  const { readOnlyFields, value } = useNestedFieldContext();
+  const { readOnlyFields } = useNestedFieldContext();
 
   const subReadOnly = forceReadOnly
     ? forceReadOnly
