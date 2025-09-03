@@ -327,10 +327,20 @@ export const ArrayField = ({
       valueRef.current = value;
 
       const newArrayState = regenerateArrayState(valueRef.current);
-      setUi(mapArrayStateToUi(newArrayState), false);
-      setLocalState(newArrayState);
+
+      // Only render if item changed, avoiding re-renders
+      if (!fdeq(newArrayState, getArrayState())) {
+        setUi(mapArrayStateToUi(newArrayState), false);
+        setLocalState(newArrayState);
+      }
     },
-    [getValue, regenerateArrayState, mapArrayStateToUi, setLocalState]
+    [
+      regenerateArrayState,
+      mapArrayStateToUi,
+      setUi,
+      setLocalState,
+      getArrayState,
+    ]
   );
 
   // Keep in sync with undo/redo history
