@@ -234,7 +234,6 @@ export const ExternalInput = ({
                           id={`external_field_${fieldName}_filter`}
                           label={filterField.label || fieldName}
                           value={filters[fieldName]}
-                          provideValue
                           onChange={(value) => {
                             setFilters((filters) => {
                               const newFilters = {

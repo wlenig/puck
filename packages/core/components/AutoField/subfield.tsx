@@ -67,8 +67,6 @@ const SubFieldInternal = ({
         onChange={(val, ui) => {
           onChange(val, ui, subName);
         }}
-        // Optionally cascade value if used outside of app fields (i.e. filters)
-        provideValue={typeof value !== "undefined"}
         value={
           typeof value !== "undefined" ? getDeep(value, subPath) : undefined
         }
