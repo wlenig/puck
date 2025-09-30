@@ -63,7 +63,7 @@ const InlineEditorWrapper = memo(
     return (
       <div ref={portalRef}>
         <InlineEditor
-          content={value || "&nbsp;"}
+          content={value}
           id={componentId}
           onChange={handleChange}
           extensionOverrides={extensionOverrides}
@@ -79,7 +79,7 @@ InlineEditorWrapper.displayName = "InlineEditorWrapper";
 export const getRichTextTransform = (): FieldTransforms => ({
   richtext: ({ value, componentId, field, propPath, isReadOnly }) => {
     const { contentEditable, config, extensions } = field;
-    if (!contentEditable || isReadOnly) {
+    if (contentEditable === false || isReadOnly) {
       return <Render content={value} />;
     }
     return (
