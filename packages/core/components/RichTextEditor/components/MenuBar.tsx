@@ -27,9 +27,11 @@ export const MenuBar = ({
       return buildEditorState(editor, menuConfig);
     },
   });
+
   if (!editor || !editorState) {
     return <Loader />;
   }
+
   return (
     <div className={getClassName("button-group")}>
       {(Object.keys(menuConfig) as Array<keyof RichTextConfigType["menu"]>).map(
