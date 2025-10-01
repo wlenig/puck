@@ -13,7 +13,8 @@
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "moduleResolution": "nodenext"
   },
   "exclude": ["node_modules"]
 }
