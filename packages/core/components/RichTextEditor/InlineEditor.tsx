@@ -12,7 +12,11 @@ export const InlineEditor = ({
   configOverrides = {},
   extensionOverrides = [],
 }: EditorProps) => {
-  const config = configOverrides ? configOverrides : defaultConfig;
+  const config = useMemo(() => {
+    return Object.keys(configOverrides).length > 0
+      ? configOverrides
+      : defaultConfig;
+  }, [configOverrides]);
 
   const extensions = useMemo(
     () => [...defaultExtensions, ...extensionOverrides] as Extensions,
@@ -25,7 +29,6 @@ export const InlineEditor = ({
     extensions,
     editable: true,
   });
-
   if (!editor) return null;
 
   return (
