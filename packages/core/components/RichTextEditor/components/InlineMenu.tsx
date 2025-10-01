@@ -11,6 +11,7 @@ import {
 import { Loader } from "../../Loader";
 import { buildEditorState } from "../lib/build-editor-state";
 import getClassNameFactory from "../../../lib/get-class-name-factory";
+
 const getClassName = getClassNameFactory("Editor", styles);
 
 export const InlineMenu = ({
