@@ -25,6 +25,7 @@ import {
   ComponentData,
   Config,
   DragAxis,
+  Fields,
   Metadata,
   PuckContext,
   WithPuckProps,
@@ -508,6 +509,20 @@ export const DropZoneEdit = forwardRef<HTMLDivElement, DropZoneProps>(
   }
 );
 
+const findRichtextKey = (
+  fields: Fields<any, {}> | undefined
+): string | null => {
+  if (!fields) return null;
+  for (const [key, field] of Object.entries(fields)) {
+    if (field.type === "richtext") return key;
+    if (field.type === "object" && field.objectFields) {
+      const nested = findRichtextKey(field.objectFields);
+      if (nested) return nested;
+    }
+  }
+  return null;
+};
+
 const DropZoneRenderItem = ({
   config,
   item,
@@ -531,9 +546,11 @@ const DropZoneRenderItem = ({
     [props]
   );
 
+  const richtextKey = findRichtextKey(Component.fields);
+
   const richTextRenderer =
-    "richtext" in props
-      ? { richtext: <Render content={props.richtext} /> }
+    richtextKey && richtextKey in props
+      ? { richtext: <Render content={props[richtextKey]} /> }
       : {};
 
   return (
