@@ -9,7 +9,9 @@
   border-radius: 4px;
   background-color: var(--puck-color-white);
   padding: 4px;
-  margin-bottom: 16px;
+  position: relative;
+  z-index: 100;
+  margin-bottom: 2px;
 }
 
 .Editor-editor-menu-alignment,
