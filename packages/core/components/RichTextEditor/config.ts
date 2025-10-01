@@ -22,19 +22,19 @@ export const defaultConfig: RichTextConfigType = {
   menu: {
     alignment: [
       {
-        title: "Align Left",
+        title: "AlignLeft",
         icon: AlignLeft,
         action: (e: Editor) => e.chain().setTextAlign("left").run(),
         state: (e: Editor) => e.isActive({ textAlign: "left" }),
       },
       {
-        title: "Align Center",
+        title: "AlignCenter",
         icon: AlignCenter,
         action: (e: Editor) => e.chain().setTextAlign("center").run(),
         state: (e: Editor) => e.isActive({ textAlign: "center" }),
       },
       {
-        title: "Align Right",
+        title: "AlignRight",
         icon: AlignRight,
         action: (e: Editor) => e.chain().setTextAlign("right").run(),
         state: (e: Editor) => e.isActive({ textAlign: "right" }),
@@ -78,42 +78,30 @@ export const defaultConfig: RichTextConfigType = {
         state: (e: Editor) => e.isActive("strike"),
         can: (e: Editor) => e.can().chain().toggleStrike().run(),
       },
-      // {
-      //   title: "Link",
-      //   icon: Link,
-      //   action: (e: Editor) => {
-      //     const url = window.prompt("URL");
-      //     if (url) {
-      //       return e.extendMarkRange("link").setLink({ href: url });
-      //     }
-      //   },
-      //   state: (e: Editor) => e.isActive("link"),
-      //   can: (e: Editor) => e.can().chain().toggleLink().run(),
-      // },
     ],
 
     blocks: [
       {
-        title: "Inline Code",
+        title: "InlineCode",
         icon: Code,
         action: (e: Editor) => e.chain().toggleCode().run(),
         state: (e: Editor) => e.isActive("code"),
         can: (e: Editor) => e.can().chain().toggleCode().run(),
       },
       {
-        title: "Bullet List",
+        title: "BulletList",
         icon: List,
         action: (e: Editor) => e.chain().toggleBulletList().run(),
         state: (e: Editor) => e.isActive("bulletList"),
       },
       {
-        title: "Ordered List",
+        title: "OrderedList",
         icon: ListOrdered,
         action: (e: Editor) => e.chain().toggleOrderedList().run(),
         state: (e: Editor) => e.isActive("orderedList"),
       },
       {
-        title: "Code Block",
+        title: "CodeBlock",
         icon: SquareCode,
         action: (e: Editor) => e.chain().toggleCodeBlock().run(),
         state: (e: Editor) => e.isActive("codeBlock"),
@@ -128,7 +116,7 @@ export const defaultConfig: RichTextConfigType = {
 
     breaks: [
       {
-        title: "Horizontal Rule",
+        title: "HorizontalRule",
         icon: Minus,
         action: (e: Editor) => e.chain().setHorizontalRule().run(),
       },
