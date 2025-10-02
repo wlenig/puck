@@ -31,7 +31,7 @@ const InlineEditorWrapper = memo(
       if (!portalRef.current) return;
       const cleanup = registerOverlayPortal(portalRef.current);
       return () => cleanup?.();
-    }, []);
+    }, [portalRef.current]);
 
     const handleChange = useCallback(
       async (content: string | JSONContent) => {
