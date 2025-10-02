@@ -1,4 +1,4 @@
-import { generateHTML } from "@tiptap/react";
+import { generateHTML, JSONContent } from "@tiptap/react";
 import { defaultExtensions } from "./extensions";
 import "./editor-styles.css";
 
