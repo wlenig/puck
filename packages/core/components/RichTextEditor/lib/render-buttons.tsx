@@ -5,20 +5,21 @@ export const renderButtons = (
   menuItems: RichTextMenuItem[],
   editorState: Record<string, boolean>,
   editor: RichTextEditor
-) =>
-  menuItems.map(({ title, icon: Icon, action, state, can }) => (
-    <IconButton
-      key={title}
-      onClick={(e) => {
-        e.stopPropagation();
-        action(editor);
-      }}
-      disabled={can ? !editorState[title + "Can"] : false}
-      variant={
-        state ? (editorState[title] ? "secondary" : "primary") : "primary"
-      }
-      title={title}
-    >
-      <Icon size={20} />
-    </IconButton>
-  ));
+) => {
+  return menuItems.map(({ title, icon: Icon, action, state, can }) => {
+    return (
+      <IconButton
+        key={title}
+        onClick={(e) => {
+          e.stopPropagation();
+          action(editor);
+        }}
+        disabled={can ? !editorState[`can${title}`] : false}
+        variant={state && editorState[`is${title}`] ? "secondary" : "primary"}
+        title={title}
+      >
+        <Icon size={20} />
+      </IconButton>
+    );
+  });
+};
