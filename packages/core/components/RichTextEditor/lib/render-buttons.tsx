@@ -1,5 +1,6 @@
-import { RichTextEditor, RichTextMenuItem } from "../../../types";
+import { RichTextMenuItem } from "../../../types";
 import { IconButton } from "../../IconButton";
+import { RichTextEditor } from "../types";
 
 export const renderButtons = (
   menuItems: RichTextMenuItem[],
