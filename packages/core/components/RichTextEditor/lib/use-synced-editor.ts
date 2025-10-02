@@ -1,7 +1,7 @@
 import { Extensions, JSONContent, useEditor } from "@tiptap/react";
 import { useEffect } from "react";
-import { ExtensionSet } from "../../../types";
 import { useDebounce } from "use-debounce";
+import { ExtensionSet } from "../types";
 
 export function useSyncedEditor<T extends Extensions>({
   content,

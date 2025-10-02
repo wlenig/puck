@@ -14,7 +14,8 @@ import {
   SquareCode,
   Strikethrough,
 } from "lucide-react";
-import { RichTextConfigType, RichTextEditor as Editor } from "../../types";
+import { RichTextConfigType } from "../../types";
+import { RichTextEditor as Editor } from "./types";
 
 export const defaultConfig: RichTextConfigType = {
   menu: {

@@ -4,9 +4,9 @@ import { defaultExtensions } from "./extensions";
 import { MenuBar } from "./components/MenuBar/MenuBar";
 import { EditorContent, Extensions } from "@tiptap/react";
 import { defaultConfig } from "./config";
-import { EditorProps } from "../../types";
 import styles from "./styles.module.css";
 import getClassNameFactory from "../../lib/get-class-name-factory";
+import { EditorProps } from "./types";
 
 const getClassName = getClassNameFactory("RichTextEditor", styles);
 

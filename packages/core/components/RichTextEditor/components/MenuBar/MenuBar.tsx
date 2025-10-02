@@ -5,13 +5,13 @@ import { BlockStyleSelect } from "../BlockStyleSelect/BlockStyleSelect";
 import { renderButtons } from "../../lib/render-buttons";
 import {
   HeadingLevel,
-  RichTextEditor,
   RichTextMenuConfig,
   RichTextMenuItem,
 } from "../../../../types";
 import { Loader } from "../../../Loader";
 import { buildEditorState } from "../../lib/build-editor-state";
 import { useMemo } from "react";
+import { RichTextEditor } from "../../types";
 const getClassName = getClassNameFactory("MenuBar", styles);
 
 export const MenuBar = ({

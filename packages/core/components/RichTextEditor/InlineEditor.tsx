@@ -4,10 +4,10 @@ import { defaultExtensions } from "./extensions";
 import { InlineMenu } from "./components/InlineMenu/InlineMenu";
 import { EditorContent, Extensions } from "@tiptap/react";
 import { defaultConfig } from "./config";
-import { EditorProps } from "../../types";
 import { Loader } from "../Loader";
 import styles from "./styles.module.css";
 import getClassNameFactory from "../../lib/get-class-name-factory";
+import { EditorProps } from "./types";
 const getClassName = getClassNameFactory("RichTextEditor", styles);
 
 export const InlineEditor = ({
