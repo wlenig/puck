@@ -1,10 +1,10 @@
 import type { Editor, Extensions, JSONContent } from "@tiptap/react";
-import type { ComponentType, ReactNode } from "react";
+import type { ReactElement } from "react";
 import { defaultExtensions } from "../components/RichTextEditor/extensions";
 import { useSyncedEditor } from "../components/RichTextEditor/lib/use-synced-editor";
 
 // Generic icon type (Lucide / React component)
-type IconType = ReactNode;
+type IconType = ReactElement;
 
 // Base menu item
 export type RichTextMenuItem = {

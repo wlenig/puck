@@ -18,7 +18,7 @@ export const renderButtons = (
         variant={state && editorState[`is${title}`] ? "secondary" : "primary"}
         title={title}
       >
-        <Icon size={20} />
+        {Icon}
       </IconButton>
     );
   });
