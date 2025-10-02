@@ -1,10 +1,10 @@
 import type { Editor, Extensions, JSONContent } from "@tiptap/react";
-import type { ComponentType } from "react";
+import type { ComponentType, ReactNode } from "react";
 import { defaultExtensions } from "../components/RichTextEditor/extensions";
 import { useSyncedEditor } from "../components/RichTextEditor/lib/use-synced-editor";
 
 // Generic icon type (Lucide / React component)
-type IconType = ComponentType<any>;
+type IconType = ReactNode;
 
 // Base menu item
 export type RichTextMenuItem = {
@@ -18,7 +18,7 @@ export type RichTextMenuItem = {
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
 // Menu config
-interface RichTextMenuConfig {
+export interface RichTextMenuConfig {
   alignment: RichTextMenuItem[];
   headings: HeadingLevel[];
   text: RichTextMenuItem[];

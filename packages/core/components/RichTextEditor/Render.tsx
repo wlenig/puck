@@ -2,7 +2,7 @@ import { generateHTML } from "@tiptap/react";
 import { defaultExtensions } from "./extensions";
 import "./editor-styles.css";
 
-export function Render({ content }: { content: any }) {
+export function Render({ content }: { content: string | JSONContent }) {
   let html: string;
 
   if (typeof content === "string") {

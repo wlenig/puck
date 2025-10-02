@@ -8,7 +8,7 @@ export const BlockStyleSelect = ({
   config,
   editor,
 }: {
-  config: RichTextConfigType["menu"]["headings"];
+  config: HeadingLevel[];
   editor: EditorType;
 }) => {
   const editorState = useEditorState({
