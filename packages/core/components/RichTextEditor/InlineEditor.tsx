@@ -5,6 +5,7 @@ import { InlineMenu } from "./components/InlineMenu";
 import { EditorContent, Extensions } from "@tiptap/react";
 import { defaultConfig } from "./config";
 import { EditorProps } from "../../types";
+import { Loader } from "../Loader";
 
 export const InlineEditor = ({
   onChange,
@@ -29,7 +30,8 @@ export const InlineEditor = ({
     extensions,
     editable: true,
   });
-  if (!editor) return null;
+
+  if (!editor) return <Loader />;
 
   return (
     <>
