@@ -1,14 +1,14 @@
 import { useMemo } from "react";
 import { BubbleMenu } from "@tiptap/react/menus";
-import {
-  HeadingLevel,
-  RichTextMenuConfig,
-  RichTextMenuItem,
-} from "../../../../types";
 import { Loader } from "../../../Loader";
 
 import { MenuBar } from "../MenuBar/MenuBar";
-import { RichTextEditor } from "../../types";
+import {
+  HeadingLevel,
+  RichTextEditor,
+  RichTextMenuConfig,
+  RichTextMenuItem,
+} from "../../types";
 
 export const InlineMenu = ({
   menuConfig,
