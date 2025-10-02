@@ -1,6 +1,11 @@
 import { useMemo } from "react";
 import { BubbleMenu } from "@tiptap/react/menus";
-import { RichTextEditor, RichTextMenuConfig } from "../../../types";
+import {
+  HeadingLevel,
+  RichTextEditor,
+  RichTextMenuConfig,
+  RichTextMenuItem,
+} from "../../../types";
 import { Loader } from "../../Loader";
 
 import { MenuBar } from "./MenuBar";
@@ -12,14 +17,14 @@ export const InlineMenu = ({
   menuConfig: Partial<RichTextMenuConfig>;
   editor: RichTextEditor | null;
 }) => {
+  const menuItems = useMemo(
+    () => Object.values(menuConfig) as (RichTextMenuItem[] | HeadingLevel[])[],
+    [menuConfig]
+  );
+
   if (!editor) {
     return <Loader />;
   }
-
-  const menuItems = useMemo(
-    () => Object.values(menuConfig) as Array<MenuConfigItem>,
-    [menuConfig]
-  );
 
   if (menuItems.length === 0) {
     return null;

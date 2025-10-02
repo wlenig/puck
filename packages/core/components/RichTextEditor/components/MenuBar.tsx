@@ -30,13 +30,14 @@ export const MenuBar = ({
     },
   });
 
-  if (!editor || !editorState) {
-    return <Loader />;
-  }
   const menuItems = useMemo(
     () => Object.keys(menuConfig) as (keyof RichTextMenuConfig)[],
     [menuConfig]
   );
+
+  if (!editor || !editorState) {
+    return <Loader />;
+  }
 
   if (menuItems.length === 0) {
     return null;
