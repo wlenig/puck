@@ -1,11 +1,14 @@
 import { useMemo } from "react";
 import { useSyncedEditor } from "./lib/use-synced-editor";
 import { defaultExtensions } from "./extensions";
-import { InlineMenu } from "./components/InlineMenu";
+import { InlineMenu } from "./components/InlineMenu/InlineMenu";
 import { EditorContent, Extensions } from "@tiptap/react";
 import { defaultConfig } from "./config";
 import { EditorProps } from "../../types";
 import { Loader } from "../Loader";
+import styles from "./styles.module.css";
+import getClassNameFactory from "../../lib/get-class-name-factory";
+const getClassName = getClassNameFactory("RichTextEditor", styles);
 
 export const InlineEditor = ({
   onChange,
@@ -36,7 +39,10 @@ export const InlineEditor = ({
   return (
     <>
       <InlineMenu editor={editor} menuConfig={config.inlineMenu || {}} />
-      <EditorContent editor={editor} className="rich-text-editor-inline" />
+      <EditorContent
+        editor={editor}
+        className={getClassName({ inline: true })}
+      />
     </>
   );
 };

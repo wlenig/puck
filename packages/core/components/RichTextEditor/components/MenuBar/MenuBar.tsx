@@ -1,18 +1,18 @@
 import { useEditorState } from "@tiptap/react";
-import getClassNameFactory from "../../../lib/get-class-name-factory";
-import styles from "../styles.module.css";
-import { BlockStyleSelect } from "./BlockStyleSelect";
-import { renderButtons } from "../lib/render-buttons";
+import getClassNameFactory from "../../../../lib/get-class-name-factory";
+import styles from "./styles.module.css";
+import { BlockStyleSelect } from "../BlockStyleSelect/BlockStyleSelect";
+import { renderButtons } from "../../lib/render-buttons";
 import {
   HeadingLevel,
   RichTextEditor,
   RichTextMenuConfig,
   RichTextMenuItem,
-} from "../../../types";
-import { Loader } from "../../Loader";
-import { buildEditorState } from "../lib/build-editor-state";
+} from "../../../../types";
+import { Loader } from "../../../Loader";
+import { buildEditorState } from "../../lib/build-editor-state";
 import { useMemo } from "react";
-const getClassName = getClassNameFactory("Editor", styles);
+const getClassName = getClassNameFactory("MenuBar", styles);
 
 export const MenuBar = ({
   menuConfig,
@@ -59,10 +59,7 @@ export const MenuBar = ({
           );
         } else {
           return (
-            <div
-              key={String(key)}
-              className={getClassName(`editor-menu-${key}`)}
-            >
+            <div key={String(key)} className={getClassName(`menu-${key}`)}>
               {renderButtons(
                 configItem as RichTextMenuItem[],
                 editorState,

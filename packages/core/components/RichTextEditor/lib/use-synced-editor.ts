@@ -1,6 +1,5 @@
 import { Extensions, JSONContent, useEditor } from "@tiptap/react";
 import { useEffect } from "react";
-import "../editor-styles.css";
 import { ExtensionSet } from "../../../types";
 import { useDebounce } from "use-debounce";
 

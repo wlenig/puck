@@ -1,6 +1,9 @@
 import { generateHTML, JSONContent } from "@tiptap/react";
 import { defaultExtensions } from "./extensions";
-import "./editor-styles.css";
+import styles from "./styles.module.css";
+import getClassNameFactory from "../../lib/get-class-name-factory";
+
+const getClassName = getClassNameFactory("RichTextEditor", styles);
 
 export function Render({ content }: { content: string | JSONContent }) {
   let html: string;
@@ -13,5 +16,10 @@ export function Render({ content }: { content: string | JSONContent }) {
     html = generateHTML(content, defaultExtensions);
   }
 
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  return (
+    <div
+      className={getClassName({ render: true })}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
 }

@@ -1,10 +1,14 @@
 import { memo, useMemo } from "react";
 import { useSyncedEditor } from "./lib/use-synced-editor";
 import { defaultExtensions } from "./extensions";
-import { MenuBar } from "./components/MenuBar";
+import { MenuBar } from "./components/MenuBar/MenuBar";
 import { EditorContent, Extensions } from "@tiptap/react";
 import { defaultConfig } from "./config";
 import { EditorProps } from "../../types";
+import styles from "./styles.module.css";
+import getClassNameFactory from "../../lib/get-class-name-factory";
+
+const getClassName = getClassNameFactory("RichTextEditor", styles);
 
 export const Editor = memo(
   ({
@@ -35,7 +39,10 @@ export const Editor = memo(
         {!readOnly && (
           <MenuBar menuConfig={config.menu || {}} editor={editor} />
         )}
-        <EditorContent editor={editor} className="rich-text-editor" />
+        <EditorContent
+          editor={editor}
+          className={getClassName({ editor: true })}
+        />
       </>
     );
   }

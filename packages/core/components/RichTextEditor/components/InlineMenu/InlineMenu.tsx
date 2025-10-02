@@ -5,10 +5,10 @@ import {
   RichTextEditor,
   RichTextMenuConfig,
   RichTextMenuItem,
-} from "../../../types";
-import { Loader } from "../../Loader";
+} from "../../../../types";
+import { Loader } from "../../../Loader";
 
-import { MenuBar } from "./MenuBar";
+import { MenuBar } from "../MenuBar/MenuBar";
 
 export const InlineMenu = ({
   menuConfig,

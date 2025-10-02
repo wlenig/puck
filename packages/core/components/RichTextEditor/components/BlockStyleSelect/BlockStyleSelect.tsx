@@ -1,8 +1,8 @@
 import { useEditorState, Editor as EditorType } from "@tiptap/react";
-import { HeadingLevel, RichTextConfigType } from "../../../types";
-import styles from "../styles.module.css";
-import getClassNameFactory from "../../../lib/get-class-name-factory";
-const getClassName = getClassNameFactory("Input", styles);
+import { HeadingLevel } from "../../../../types";
+import styles from "./styles.module.css";
+import getClassNameFactory from "../../../../lib/get-class-name-factory";
+const getClassName = getClassNameFactory("BlockStyleSelect", styles);
 
 export const BlockStyleSelect = ({
   config,
