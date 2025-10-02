@@ -23,15 +23,15 @@ export const BlockStyleSelect = ({
   });
 
   const value = editorState || "paragraph";
-  const chainFocus = editor.chain().focus();
+  const chain = editor.chain();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
     if (val === "paragraph") {
-      chainFocus.setParagraph().run();
+      chain.setParagraph().run();
     } else {
       const level = parseInt(val.replace("h", ""), 10) as HeadingLevel;
-      chainFocus.toggleHeading({ level }).run();
+      chain.toggleHeading({ level }).run();
     }
   };
   if (!config || config.length === 0) return null;
