@@ -14,7 +14,8 @@ export const RichtextField = ({
   field,
   id,
 }: FieldPropsInternal) => {
-  const { config, extensions } = field as RichtextFieldType;
+  const { menu, controls, extensions, textSelectOptions, selector } =
+    field as RichtextFieldType;
   return (
     <>
       <Label
@@ -27,8 +28,11 @@ export const RichtextField = ({
           onChange={onChange}
           content={typeof value === "undefined" ? "" : value}
           readOnly={readOnly || false}
-          configOverrides={config}
-          extensionOverrides={extensions}
+          extensions={extensions}
+          menu={menu}
+          textSelectOptions={textSelectOptions}
+          selector={selector}
+          controls={controls}
           id={id}
         />
       </Label>

@@ -14,10 +14,7 @@
   margin-bottom: 2px;
 }
 
-.MenuBar-menu-alignment,
-.MenuBar-menu-text,
-.MenuBar-menu-blocks,
-.MenuBar-menu-breaks {
+.MenuBar-menu {
   display: flex;
   align-items: space-between;
   flex-direction: row;

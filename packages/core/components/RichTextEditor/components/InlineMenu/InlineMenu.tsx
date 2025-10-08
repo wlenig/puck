@@ -4,34 +4,32 @@ import { Loader } from "../../../Loader";
 
 import { MenuBar } from "../MenuBar/MenuBar";
 import {
-  HeadingLevel,
   RichTextEditor,
-  RichTextMenuConfig,
   RichTextMenuItem,
+  RichTextSelector,
 } from "../../types";
 
 export const InlineMenu = ({
   menuConfig,
   editor,
+  selector,
 }: {
-  menuConfig: Partial<RichTextMenuConfig>;
+  menuConfig: Record<string, Record<string, RichTextMenuItem>>;
   editor: RichTextEditor | null;
+  selector?: RichTextSelector;
 }) => {
-  const menuItems = useMemo(
-    () => Object.values(menuConfig) as (RichTextMenuItem[] | HeadingLevel[])[],
-    [menuConfig]
-  );
+  const menuGroups = useMemo(() => Object.keys(menuConfig), [menuConfig]);
 
   if (!editor) {
     return <Loader />;
   }
 
-  if (menuItems.length === 0) {
+  if (menuGroups.length === 0) {
     return null;
   }
   return (
     <BubbleMenu editor={editor}>
-      <MenuBar menuConfig={menuConfig} editor={editor} />
+      <MenuBar menuConfig={menuConfig} editor={editor} selector={selector} />
     </BubbleMenu>
   );
 };

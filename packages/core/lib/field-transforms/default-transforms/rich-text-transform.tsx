@@ -1,5 +1,5 @@
 "use client";
-import { InlineEditor } from "../../../components/RichTextEditor";
+import { Editor } from "../../../components/RichTextEditor";
 import { Render } from "../../../components/RichTextEditor/Render";
 import { FieldTransforms } from "../../../types/API/FieldTransforms";
 import { useAppStoreApi } from "../../../store";
@@ -7,21 +7,32 @@ import { setDeep } from "../../../lib/data/set-deep";
 import { registerOverlayPortal } from "../../../lib/overlay-portal";
 import { useEffect, useRef, useCallback, memo } from "react";
 import { Extensions, JSONContent } from "@tiptap/react";
-import { RichTextConfigType } from "../../../types";
+import {
+  RichTextControls,
+  RichTextMenuConfig,
+  RichTextSelectOptions,
+  RichTextSelector,
+} from "../../../components/RichTextEditor/types";
 
 const InlineEditorWrapper = memo(
   ({
     value,
     componentId,
     propPath,
-    extensionOverrides,
-    configOverrides,
+    menu,
+    textSelectOptions,
+    selector,
+    controls,
+    extensions,
   }: {
     value: string;
     componentId: string;
     propPath: string;
-    extensionOverrides?: Extensions[];
-    configOverrides?: Partial<RichTextConfigType>;
+    menu?: RichTextMenuConfig;
+    textSelectOptions?: RichTextSelectOptions[];
+    selector?: RichTextSelector;
+    controls?: RichTextControls;
+    extensions?: Extensions[];
   }) => {
     const portalRef = useRef<HTMLDivElement>(null);
     const appStoreApi = useAppStoreApi();
@@ -62,12 +73,16 @@ const InlineEditorWrapper = memo(
 
     return (
       <div ref={portalRef}>
-        <InlineEditor
+        <Editor
           content={value}
           id={componentId}
           onChange={handleChange}
-          extensionOverrides={extensionOverrides}
-          configOverrides={configOverrides}
+          extensions={extensions}
+          menu={menu}
+          textSelectOptions={textSelectOptions}
+          selector={selector}
+          controls={controls}
+          inline
         />
       </div>
     );
@@ -78,7 +93,14 @@ InlineEditorWrapper.displayName = "InlineEditorWrapper";
 
 export const getRichTextTransform = (): FieldTransforms => ({
   richtext: ({ value, componentId, field, propPath, isReadOnly }) => {
-    const { contentEditable, config, extensions } = field;
+    const {
+      contentEditable,
+      inlineMenu,
+      textSelectOptions,
+      selector,
+      controls,
+      extensions,
+    } = field;
 
     if (contentEditable === false || isReadOnly) {
       return <Render content={value} />;
@@ -89,9 +111,12 @@ export const getRichTextTransform = (): FieldTransforms => ({
         key={componentId}
         value={value}
         componentId={componentId}
-        extensionOverrides={extensions || []}
-        configOverrides={config}
         propPath={propPath}
+        menu={inlineMenu}
+        textSelectOptions={textSelectOptions}
+        selector={selector}
+        controls={controls}
+        extensions={extensions}
       />
     );
   },

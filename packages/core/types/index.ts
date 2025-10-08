@@ -6,4 +6,3 @@ export * from "./Data";
 export * from "./Fields";
 export * from "./Props";
 export * from "./Utils";
-export * from "./RichTextEditor";

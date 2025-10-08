@@ -1,40 +1,54 @@
-import { Editor, Extensions, JSONContent } from "@tiptap/react";
+import {
+  Editor,
+  EditorStateSnapshot,
+  Extensions,
+  JSONContent,
+} from "@tiptap/react";
 import { defaultExtensions } from "./extensions";
 import { useSyncedEditor } from "./lib/use-synced-editor";
-import { RichTextConfigType } from "../../types";
 
 import type { ReactElement } from "react";
-
-// Generic icon type (Lucide / React component)
-type IconType = ReactElement;
+import { defaultEditorState } from "./selector";
 
 // Base menu item
 export type RichTextMenuItem = {
-  title: string;
-  icon: IconType;
-  action: (editor: Editor) => void;
-  state?: (editor: Editor) => boolean;
-  can?: (editor: Editor) => boolean;
+  render: (editor: Editor, editorState: EditorState) => ReactElement;
 };
 
-export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
-
 // Menu config
-export interface RichTextMenuConfig {
-  alignment: RichTextMenuItem[];
-  headings: HeadingLevel[];
-  text: RichTextMenuItem[];
-  blocks: RichTextMenuItem[];
-  breaks: RichTextMenuItem[];
-}
+export type RichTextMenuConfig = Record<string, string[]>;
+
+export type RichTextControls = Record<string, RichTextMenuItem>;
+
+export type RichTextSelectOptions =
+  | "p"
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "h6";
+
+export type RichTextSelector = (
+  ctx: EditorStateSnapshot
+) => Partial<Record<string, boolean>>;
+
+export type DefaultEditorState = ReturnType<typeof defaultEditorState>;
+type CustomEditorState = ReturnType<RichTextSelector>;
+
+export type EditorState = DefaultEditorState & CustomEditorState;
 
 export type EditorProps = {
   onChange: (content: string | JSONContent) => void;
   content: string;
   id?: string;
   readOnly?: boolean;
-  configOverrides?: Partial<RichTextConfigType>;
-  extensionOverrides?: Partial<Extensions[]>;
+  menu?: RichTextMenuConfig;
+  textSelectOptions?: RichTextSelectOptions[] | [];
+  selector?: RichTextSelector;
+  controls?: RichTextControls;
+  extensions?: Extensions;
+  inline?: boolean;
 };
 
 export type DefaultExtensions = typeof defaultExtensions;

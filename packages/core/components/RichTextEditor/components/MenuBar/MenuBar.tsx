@@ -1,73 +1,68 @@
 import { useEditorState } from "@tiptap/react";
 import getClassNameFactory from "../../../../lib/get-class-name-factory";
 import styles from "./styles.module.css";
-import { BlockStyleSelect } from "../BlockStyleSelect/BlockStyleSelect";
-import { renderButtons } from "../../lib/render-buttons";
+import { RenderMenuItems } from "../RenderMenuItems/RenderMenuItems";
 import { Loader } from "../../../Loader";
-import { buildEditorState } from "../../lib/build-editor-state";
 import { useMemo } from "react";
 import {
-  HeadingLevel,
+  EditorState,
   RichTextEditor,
-  RichTextMenuConfig,
   RichTextMenuItem,
+  RichTextSelector,
 } from "../../types";
+import { defaultEditorState } from "../../selector";
 const getClassName = getClassNameFactory("MenuBar", styles);
 
 export const MenuBar = ({
   menuConfig,
   editor,
+  selector,
 }: {
-  menuConfig: Partial<RichTextMenuConfig>;
+  menuConfig: Record<string, Record<string, RichTextMenuItem>>;
   editor: RichTextEditor | null;
+  selector?: RichTextSelector;
 }) => {
-  const editorState = useEditorState({
+  const resolvedSelector = useMemo(() => {
+    return (ctx: Parameters<RichTextSelector>[0]) => ({
+      ...defaultEditorState(ctx),
+      ...(selector ? selector(ctx) : {}),
+    });
+  }, [selector]);
+
+  const editorState = useEditorState<EditorState>({
     editor,
-    selector: (ctx) => {
-      const { editor } = ctx;
-      if (!editor) return null;
-      return buildEditorState(editor, menuConfig);
-    },
+    selector: resolvedSelector,
   });
 
-  const menuItems = useMemo(
-    () => Object.keys(menuConfig) as (keyof RichTextMenuConfig)[],
-    [menuConfig]
-  );
+  const menuGroups = useMemo(() => Object.keys(menuConfig), [menuConfig]);
 
-  if (!editor || !editorState) {
+  if (!editor) {
     return <Loader />;
   }
 
-  if (menuItems.length === 0) {
+  if (!editorState) {
+    return <Loader />;
+  }
+
+  if (menuGroups.length === 0) {
     return null;
   }
 
   return (
     <div className={getClassName("button-group")}>
-      {menuItems.map((key) => {
-        const configItem = menuConfig[key];
-        if (!configItem) return null; // handle undefined in Partial
-
-        if (key === "headings") {
-          return (
-            <BlockStyleSelect
-              key={key}
-              config={configItem as HeadingLevel[]}
+      {menuGroups.map((key) => {
+        const menuItems = menuConfig[key];
+        if (!menuItems) return null; // handle undefined in Partial
+        if (Object.keys(menuItems).length === 0) return null;
+        return (
+          <div key={String(key)} className={getClassName(`menu`)}>
+            <RenderMenuItems
+              menuItems={menuItems}
               editor={editor}
+              editorState={editorState}
             />
-          );
-        } else {
-          return (
-            <div key={String(key)} className={getClassName(`menu-${key}`)}>
-              {renderButtons(
-                configItem as RichTextMenuItem[],
-                editorState,
-                editor
-              )}
-            </div>
-          );
-        }
+          </div>
+        );
       })}
     </div>
   );
