@@ -32,7 +32,7 @@ const InlineEditorWrapper = memo(
     textSelectOptions?: RichTextSelectOptions[];
     selector?: RichTextSelector;
     controls?: RichTextControls;
-    extensions?: Extensions[];
+    extensions?: Extensions;
   }) => {
     const portalRef = useRef<HTMLDivElement>(null);
     const appStoreApi = useAppStoreApi();
