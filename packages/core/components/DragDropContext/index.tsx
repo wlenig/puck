@@ -12,12 +12,7 @@ import {
   useRef,
   useState,
 } from "react";
-import {
-  AutoScroller,
-  Scroller,
-  defaultPreset,
-  DragDropManager,
-} from "@dnd-kit/dom";
+import { AutoScroller, defaultPreset, DragDropManager } from "@dnd-kit/dom";
 import { DragDropEvents } from "@dnd-kit/abstract";
 import { DropZoneProvider } from "../DropZone";
 import type { Draggable, Droppable } from "@dnd-kit/dom";
@@ -213,11 +208,9 @@ const DragDropContextClient = ({
   }, []);
 
   const [plugins] = useState(() => [
-    Scroller,
-    ...(disableAutoScroll ? [] : [AutoScroller]),
-    ...defaultPreset.plugins.filter(
-      (p) => p !== Scroller && p !== AutoScroller
-    ),
+    ...(disableAutoScroll
+      ? defaultPreset.plugins.filter((plugin) => plugin !== AutoScroller)
+      : defaultPreset.plugins),
     createNestedDroppablePlugin(
       {
         onChange: (params, manager) => {
