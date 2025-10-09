@@ -5,7 +5,7 @@ import { RichtextField as RichtextFieldType } from "../../../../types";
 
 export const RichtextField = ({
   onChange,
-  readOnly,
+  readOnly = false,
   value,
   name,
   label,
@@ -27,7 +27,7 @@ export const RichtextField = ({
         <Editor
           onChange={onChange}
           content={typeof value === "undefined" ? "" : value}
-          readOnly={readOnly || false}
+          readOnly={readOnly}
           extensions={extensions}
           menu={menu}
           textSelectOptions={textSelectOptions}

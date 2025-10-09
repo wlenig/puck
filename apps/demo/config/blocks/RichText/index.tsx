@@ -11,7 +11,6 @@ const RichTextInner: ComponentConfig<RichTextProps> = {
   fields: {
     richtext: {
       type: "richtext",
-      contentEditable: true,
     },
   },
   render: ({ richtext }) => {

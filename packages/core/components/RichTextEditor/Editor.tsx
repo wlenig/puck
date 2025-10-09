@@ -37,7 +37,12 @@ export const Editor = memo(
     });
 
     const loadedMenu = useMemo(
-      () => (menu ? menu : inline ? defaultInlineMenu : defaultMenu),
+      () =>
+        Object.entries(menu).length > 0
+          ? menu
+          : inline
+          ? defaultInlineMenu
+          : defaultMenu,
       [menu]
     );
 
