@@ -26,7 +26,8 @@ Render a `richtext` input. Extends [Base](base).
 />
 
 <Callout>
-    `defaultProps` currently supports an `html` string value. The editor renders the content as `html`.
+  `defaultProps` currently supports an `html` string value. The editor renders
+  the content as `html`.
 </Callout>
 
 ```tsx {5-7} copy
@@ -523,7 +524,7 @@ Defaults to `true`.
 ### `extensions`
 
 ```tsx
-["StarterKit", "TextAlign"]
+["StarterKit", "TextAlign"];
 ```
 
 ### `selector`
@@ -576,7 +577,6 @@ Defaults to `true`.
     canHorizontalRule: editor.can().chain().setHorizontalRule().run(),
   };
 };
-
 ```
 
 ## Extending the Editor
@@ -644,7 +644,7 @@ const config = {
 
 ### Advanced configuration
 
-Let's explore advanced configuration options for the RichText field. Say, you want to add the Superscript extension from TipTap [`@tiptap/extension-superscript`](https://tiptap.dev/docs/editor/extensions/marks/superscript).  Here's how you can define your field config to add their extension and configure for your editor.
+Let's explore advanced configuration options for the RichText field. Say, you want to add the Superscript extension from TipTap [`@tiptap/extension-superscript`](https://tiptap.dev/docs/editor/extensions/marks/superscript). Here's how you can define your field config to add their extension and configure for your editor.
 
 <ConfigPreview
   label="Example"
