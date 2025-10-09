@@ -157,7 +157,10 @@ const BoldControl = {
   render: (editor, editorState) => (
     <button
       type="button"
-      onClick={() => editor.chain().focus().toggleBold().run()}
+      onClick={(e) =>  {
+        e.stopPropagation();
+        editor.chain().toggleBold().run();
+      }}
       disabled={!editorState.canBold}
       style={{ fontWeight: editorState.isBold ? "bold" : "normal" }}
     >
@@ -181,6 +184,10 @@ const config = {
   },
 };
 ```
+
+<Callout>
+    Note: The `e.stopPropagation();` is required in Puck in order to avoid issues with the portal on inlineMenu.
+</Callout>
 
 ### `textSelectOptions`
 
@@ -676,8 +683,9 @@ const customControls = {
       return (
         <div>
           <button
-            onClick={() => {
-              editor.chain().focus().toggleSuperscript().run();
+            onClick={(e) => {
+              e.stopPropagation();
+              editor.chain().toggleSuperscript().run();
             }}
             style={
               editorState.isSuperscript ? { color: "blue" } : { color: "black" }
