@@ -102,7 +102,7 @@ export const getRichTextTransform = (): FieldTransforms => ({
       extensions,
     } = field;
     if (contentEditable === false || isReadOnly) {
-      return <Render content={value} />;
+      return <Render content={value} extensions={extensions} />;
     }
 
     return (
