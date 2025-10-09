@@ -157,7 +157,7 @@ const BoldControl = {
   render: (editor, editorState) => (
     <button
       type="button"
-      onClick={(e) =>  {
+      onClick={(e) => {
         e.stopPropagation();
         editor.chain().toggleBold().run();
       }}
@@ -186,7 +186,8 @@ const config = {
 ```
 
 <Callout>
-    Note: The `e.stopPropagation();` is required in Puck in order to avoid issues with the portal on inlineMenu.
+  Note: The `e.stopPropagation();` is required in Puck in order to avoid issues
+  with the portal on inlineMenu.
 </Callout>
 
 ### `textSelectOptions`
