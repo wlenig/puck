@@ -5,7 +5,14 @@ import { FieldTransforms } from "../../../types/API/FieldTransforms";
 import { useAppStoreApi } from "../../../store";
 import { setDeep } from "../../../lib/data/set-deep";
 import { registerOverlayPortal } from "../../../lib/overlay-portal";
-import { useEffect, useRef, useCallback, memo, MouseEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useCallback,
+  memo,
+  MouseEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+} from "react";
 import { Extensions, JSONContent } from "@tiptap/react";
 import {
   RichTextControls,
@@ -50,6 +57,18 @@ const InlineEditorWrapper = memo(
       appStoreApi.getState().setUi({ itemSelector });
     };
 
+    const handleHotkeyCapture = useCallback(
+      (event: ReactKeyboardEvent<HTMLDivElement>) => {
+        if (
+          (event.metaKey || event.ctrlKey) &&
+          event.key.toLowerCase() === "i"
+        ) {
+          event.stopPropagation();
+        }
+      },
+      []
+    );
+
     // Register portal once
     useEffect(() => {
       if (!portalRef.current) return;
@@ -85,7 +104,11 @@ const InlineEditorWrapper = memo(
     );
 
     return (
-      <div ref={portalRef} onClick={onClickHandler}>
+      <div
+        ref={portalRef}
+        onClick={onClickHandler}
+        onKeyDownCapture={handleHotkeyCapture}
+      >
         <Editor
           content={value}
           id={componentId}
