@@ -5,7 +5,7 @@ import { FieldTransforms } from "../../../types/API/FieldTransforms";
 import { useAppStoreApi } from "../../../store";
 import { setDeep } from "../../../lib/data/set-deep";
 import { registerOverlayPortal } from "../../../lib/overlay-portal";
-import { useEffect, useRef, useCallback, memo } from "react";
+import { useEffect, useRef, useCallback, memo, MouseEvent } from "react";
 import { Extensions, JSONContent } from "@tiptap/react";
 import {
   RichTextControls,
@@ -13,6 +13,7 @@ import {
   RichTextSelectOptions,
   RichTextSelector,
 } from "../../../components/RichTextEditor/types";
+import { getSelectorForId } from "../../get-selector-for-id";
 
 const InlineEditorWrapper = memo(
   ({
@@ -36,6 +37,18 @@ const InlineEditorWrapper = memo(
   }) => {
     const portalRef = useRef<HTMLDivElement>(null);
     const appStoreApi = useAppStoreApi();
+
+    const onClickHandler = (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const itemSelector = getSelectorForId(
+        appStoreApi.getState().state,
+        componentId
+      );
+
+      appStoreApi.getState().setUi({ itemSelector });
+    };
 
     // Register portal once
     useEffect(() => {
@@ -72,7 +85,7 @@ const InlineEditorWrapper = memo(
     );
 
     return (
-      <div ref={portalRef}>
+      <div ref={portalRef} onClick={onClickHandler}>
         <Editor
           content={value}
           id={componentId}
