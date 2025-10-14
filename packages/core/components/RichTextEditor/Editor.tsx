@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo, KeyboardEvent, MouseEvent } from "react";
 import { useSyncedEditor } from "./lib/use-synced-editor";
 import { defaultExtensions } from "./extensions";
 import { MenuBar } from "./components/MenuBar/MenuBar";
@@ -88,12 +88,24 @@ export const Editor = memo(
       [loadedControls, loadedMenu]
     );
 
+    const handleHotkeyCapture = useCallback(
+      (event: KeyboardEvent<HTMLDivElement>) => {
+        if (
+          (event.metaKey || event.ctrlKey) &&
+          event.key.toLowerCase() === "i"
+        ) {
+          event.stopPropagation();
+        }
+      },
+      []
+    );
+
     if (!editor) return null;
 
     const Menu = inline ? InlineMenu : MenuBar;
 
     return (
-      <>
+      <div onKeyDownCapture={handleHotkeyCapture}>
         {!readOnly && (
           <Menu
             menuConfig={groupedMenu || {}}
@@ -105,7 +117,7 @@ export const Editor = memo(
           editor={editor}
           className={getClassName({ editor: !inline, inline })}
         />
-      </>
+      </div>
     );
   }
 );
