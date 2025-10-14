@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, KeyboardEvent, MouseEvent } from "react";
+import { memo, useCallback, useMemo, KeyboardEvent } from "react";
 import { useSyncedEditor } from "./lib/use-synced-editor";
 import { defaultExtensions } from "./extensions";
 import { MenuBar } from "./components/MenuBar/MenuBar";
