@@ -1,6 +1,6 @@
 import type { JSX, ReactNode } from "react";
 import { BaseField, Field, Fields } from "./Fields";
-import { ComponentData, Metadata, RootData } from "./Data";
+import { ComponentData, ComponentMetadata, RootData } from "./Data";
 
 import { AsFieldProps, WithChildren, WithId, WithPuckProps } from "./Utils";
 import { AppState } from "./AppState";
@@ -52,7 +52,7 @@ type ComponentConfigInternal<
       fields: Fields<FieldProps>;
       lastFields: Fields<FieldProps>;
       lastData: DataShape | null;
-      metadata: Metadata;
+      metadata: ComponentMetadata;
       appState: AppState;
       parent: ComponentData | null;
     }
@@ -62,7 +62,7 @@ type ComponentConfigInternal<
     params: {
       changed: Partial<Record<keyof FieldProps, boolean> & { id: string }>;
       lastData: DataShape | null;
-      metadata: Metadata;
+      metadata: ComponentMetadata;
       trigger: ResolveDataTrigger;
     }
   ) =>
@@ -78,7 +78,7 @@ type ComponentConfigInternal<
       lastData: DataShape | null;
     }
   ) => Promise<Partial<Permissions>> | Partial<Permissions>;
-  metadata?: Metadata;
+  metadata?: ComponentMetadata;
 };
 
 // DEPRECATED - remove old generics in favour of Params
