@@ -33,6 +33,8 @@ type WithPartialProps<T, Props extends DefaultComponentProps> = Omit<
   props?: Partial<Props>;
 };
 
+export interface ComponentConfigExtensions {}
+
 type ComponentConfigInternal<
   RenderProps extends DefaultComponentProps,
   FieldProps extends DefaultComponentProps,
@@ -79,7 +81,7 @@ type ComponentConfigInternal<
     }
   ) => Promise<Partial<Permissions>> | Partial<Permissions>;
   metadata?: ComponentMetadata;
-};
+} & ComponentConfigExtensions;
 
 // DEPRECATED - remove old generics in favour of Params
 export type ComponentConfig<
