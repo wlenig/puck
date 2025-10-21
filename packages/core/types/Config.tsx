@@ -8,8 +8,8 @@ import { DefaultComponentProps, DefaultRootFieldProps } from "./Props";
 import { Permissions } from "./API";
 import { DropZoneProps } from "../components/DropZone/types";
 import {
-  ComponentConfigParams,
-  ConfigParams,
+  AssertHasValue,
+  FieldsExtension,
   LeftOrExactRight,
   WithDeepSlots,
 } from "./Internal";
@@ -228,3 +228,23 @@ export type ExtractConfigParams<UserConfig extends ConfigInternal> =
         field: UserField extends { type: string } ? UserField : Field;
       }
     : never;
+
+export type ConfigParams<
+  Components extends DefaultComponents = DefaultComponents,
+  RootProps extends DefaultComponentProps = any,
+  CategoryNames extends string[] = string[],
+  UserFields extends FieldsExtension = FieldsExtension
+> = {
+  components?: Components;
+  root?: RootProps;
+  categories?: CategoryNames;
+  fields?: AssertHasValue<UserFields>;
+};
+
+export type ComponentConfigParams<
+  Props extends DefaultComponentProps = DefaultComponentProps,
+  UserFields extends FieldsExtension = never
+> = {
+  props: Props;
+  fields?: AssertHasValue<UserFields>;
+};
