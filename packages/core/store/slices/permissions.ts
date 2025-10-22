@@ -105,7 +105,10 @@ export const createPermissionsSlice = (
               cache: {
                 ...latest.cache,
                 [item.props.id]: {
-                  lastNode: nodes[item.props.id] || null,
+                  lastNode: nodes[item.props.id]
+                    ? // make sure the data comes from appState.data (item) to include latest changes, node doesn't include them
+                      { ...nodes[item.props.id], data: item }
+                    : null,
                   lastPermissions: resolvedPermissions,
                 },
               },
