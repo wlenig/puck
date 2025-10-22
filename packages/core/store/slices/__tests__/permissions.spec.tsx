@@ -491,7 +491,7 @@ describe("permissions slice", () => {
       renderHook(() =>
         useRegisterPermissionsSlice(appStore, { testGlobal: true })
       );
-      
+
       // Wait for the initial resolvePermissions promises to resolve
       await waitFor(
         () => Object.keys(appStore.getState().permissions.cache).length > 0
