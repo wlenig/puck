@@ -218,24 +218,29 @@ describe("permissions slice", () => {
         resolved: true,
       });
 
+      const config = {
+        components: {
+          MyComponent: {
+            render: () => <div />,
+            permissions: { base: true },
+            resolvePermissions,
+          },
+        },
+      };
+
       appStore.setState({
         ...appStore.getInitialState(),
-        config: {
-          components: {
-            MyComponent: {
-              render: () => <div />,
-              permissions: { base: true },
-              resolvePermissions,
+        config,
+        state: walkAppState(
+          {
+            ...defaultAppState,
+            data: {
+              ...defaultAppState.data,
+              content: [{ type: "MyComponent", props: { id: "comp-1" } }],
             },
           },
-        },
-        state: {
-          ...defaultAppState,
-          data: {
-            ...defaultAppState.data,
-            content: [{ type: "MyComponent", props: { id: "comp-1" } }],
-          },
-        },
+          config
+        ),
       });
 
       renderHook(() =>
@@ -267,6 +272,7 @@ describe("permissions slice", () => {
             globalTest: true,
             insert: true,
           },
+          parent: { type: "root", props: { id: "root" } },
         }
       );
 
@@ -351,6 +357,7 @@ describe("permissions slice", () => {
             globalTest: true,
             insert: true,
           },
+          parent: { type: "root", props: { id: "root" } },
         }
       );
 
