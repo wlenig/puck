@@ -59,6 +59,7 @@ export const createPermissionsSlice = (
       force: boolean = false
     ) => {
       const { config, state: appState, setComponentLoading } = get();
+      const itemCache: Cache[string] | undefined = cache[item.props.id];
       const nodes = appState.indexes.nodes;
       const parentId = nodes[item.props.id]?.parentId;
       const parentNode = parentId ? nodes[parentId] : null;
@@ -77,10 +78,9 @@ export const createPermissionsSlice = (
       };
 
       if (componentConfig.resolvePermissions) {
-        const changed = getChanged(item, cache[item.props.id]?.lastNode?.data);
+        const changed = getChanged(item, itemCache?.lastNode?.data);
         const propsChanged = Object.values(changed).some((el) => el === true);
-        const parentChanged =
-          cache[item.props.id]?.lastNode?.parentId !== parentId;
+        const parentChanged = itemCache?.lastNode?.parentId !== parentId;
 
         if (propsChanged || parentChanged || force) {
           const clearTimeout = setComponentLoading(item.props.id, true, 50);
@@ -89,10 +89,10 @@ export const createPermissionsSlice = (
             item,
             {
               changed,
-              lastPermissions: cache[item.props.id]?.lastPermissions || null,
+              lastPermissions: itemCache?.lastPermissions || null,
               permissions: initialPermissions,
               appState: makeStatePublic(appState),
-              lastData: cache[item.props.id]?.lastNode?.data || null,
+              lastData: itemCache?.lastNode?.data || null,
               parent: parentData,
             }
           );
