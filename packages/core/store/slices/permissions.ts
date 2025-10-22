@@ -4,7 +4,6 @@ import { ComponentData, Config, Permissions, UserGenerics } from "../../types";
 import { getChanged } from "../../lib/get-changed";
 import { AppStore, useAppStoreApi } from "../";
 import { makeStatePublic } from "../../lib/data/make-state-public";
-import { PuckNodeData } from "../../types/Internal";
 
 type PermissionsArgs<
   UserConfig extends Config = Config,
@@ -33,7 +32,8 @@ type Cache = Record<
   string,
   {
     lastPermissions: Partial<Permissions>;
-    lastNode: PuckNodeData | null;
+    lastData: ComponentData | null;
+    lastParentId: string | null;
   }
 >;
 
@@ -78,9 +78,9 @@ export const createPermissionsSlice = (
       };
 
       if (componentConfig.resolvePermissions) {
-        const changed = getChanged(item, itemCache?.lastNode?.data);
+        const changed = getChanged(item, itemCache?.lastData);
         const propsChanged = Object.values(changed).some((el) => el === true);
-        const parentChanged = itemCache?.lastNode?.parentId !== parentId;
+        const parentChanged = itemCache?.lastParentId !== parentId;
 
         if (propsChanged || parentChanged || force) {
           const clearTimeout = setComponentLoading(item.props.id, true, 50);
@@ -92,7 +92,7 @@ export const createPermissionsSlice = (
               lastPermissions: itemCache?.lastPermissions || null,
               permissions: initialPermissions,
               appState: makeStatePublic(appState),
-              lastData: itemCache?.lastNode?.data || null,
+              lastData: itemCache?.lastData || null,
               parent: parentData,
             }
           );
@@ -105,10 +105,8 @@ export const createPermissionsSlice = (
               cache: {
                 ...latest.cache,
                 [item.props.id]: {
-                  lastNode: nodes[item.props.id]
-                    ? // make sure the data comes from appState.data (item) to include latest changes, node doesn't include them
-                      { ...nodes[item.props.id], data: item }
-                    : null,
+                  lastParentId: parentId,
+                  lastData: item,
                   lastPermissions: resolvedPermissions,
                 },
               },
