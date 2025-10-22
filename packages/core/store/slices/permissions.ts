@@ -4,6 +4,7 @@ import { ComponentData, Config, Permissions, UserGenerics } from "../../types";
 import { getChanged } from "../../lib/get-changed";
 import { AppStore, useAppStoreApi } from "../";
 import { makeStatePublic } from "../../lib/data/make-state-public";
+import { PuckNodeData } from "../../types/Internal";
 
 type PermissionsArgs<
   UserConfig extends Config = Config,
@@ -32,7 +33,7 @@ type Cache = Record<
   string,
   {
     lastPermissions: Partial<Permissions>;
-    lastData: ComponentData | null;
+    lastNode: PuckNodeData | null;
   }
 >;
 
@@ -53,11 +54,16 @@ export const createPermissionsSlice = (
     const { state, permissions, config } = get();
     const { cache, globalPermissions } = permissions;
 
-    const resolveDataForItem = async (
+    const resolvePermissionsForItem = async (
       item: ComponentData,
       force: boolean = false
     ) => {
       const { config, state: appState, setComponentLoading } = get();
+      const nodes = appState.indexes.nodes;
+      const parentId = nodes[item.props.id]?.parentId;
+      const parentNode = parentId ? nodes[parentId] : null;
+      const parentData = parentNode?.data ?? null;
+
       const componentConfig =
         item.type === "root" ? config.root : config.components[item.type];
 
@@ -71,9 +77,12 @@ export const createPermissionsSlice = (
       };
 
       if (componentConfig.resolvePermissions) {
-        const changed = getChanged(item, cache[item.props.id]?.lastData);
+        const changed = getChanged(item, cache[item.props.id]?.lastNode?.data);
+        const propsChanged = Object.values(changed).some((el) => el === true);
+        const parentChanged =
+          cache[item.props.id]?.lastNode?.parentId !== parentId;
 
-        if (Object.values(changed).some((el) => el === true) || force) {
+        if (propsChanged || parentChanged || force) {
           const clearTimeout = setComponentLoading(item.props.id, true, 50);
 
           const resolvedPermissions = await componentConfig.resolvePermissions(
@@ -83,7 +92,8 @@ export const createPermissionsSlice = (
               lastPermissions: cache[item.props.id]?.lastPermissions || null,
               permissions: initialPermissions,
               appState: makeStatePublic(appState),
-              lastData: cache[item.props.id]?.lastData || null,
+              lastData: cache[item.props.id]?.lastNode?.data || null,
+              parent: parentData,
             }
           );
 
@@ -95,7 +105,7 @@ export const createPermissionsSlice = (
               cache: {
                 ...latest.cache,
                 [item.props.id]: {
-                  lastData: item,
+                  lastNode: nodes[item.props.id] || null,
                   lastPermissions: resolvedPermissions,
                 },
               },
@@ -111,10 +121,10 @@ export const createPermissionsSlice = (
       }
     };
 
-    const resolveDataForRoot = (force = false) => {
+    const resolvePermissionsForRoot = (force = false) => {
       const { state: appState } = get();
 
-      resolveDataForItem(
+      resolvePermissionsForItem(
         // Shim the root data in by conforming to component data shape
         {
           type: "root",
@@ -128,20 +138,20 @@ export const createPermissionsSlice = (
 
     if (item) {
       // Resolve specific item
-      await resolveDataForItem(item, force);
+      await resolvePermissionsForItem(item, force);
     } else if (type) {
       // Resolve specific type
       flattenData(state, config)
         .filter((item) => item.type === type)
         .map(async (item) => {
-          await resolveDataForItem(item, force);
+          await resolvePermissionsForItem(item, force);
         });
     } else if (root) {
-      resolveDataForRoot(force);
+      resolvePermissionsForRoot(force);
     } else {
       // Resolve everything
       flattenData(state, config).map(async (item) => {
-        await resolveDataForItem(item, force);
+        await resolvePermissionsForItem(item, force);
       });
     }
   };

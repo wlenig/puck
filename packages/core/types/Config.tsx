@@ -76,6 +76,7 @@ type ComponentConfigInternal<
       permissions: Partial<Permissions>;
       appState: AppState;
       lastData: DataShape | null;
+      parent: ComponentData | null;
     }
   ) => Promise<Partial<Permissions>> | Partial<Permissions>;
   metadata?: Metadata;
