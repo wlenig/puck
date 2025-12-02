@@ -1,11 +1,14 @@
 {
-  "name": "@measured/puck",
+  "name": "@wlenig/puck",
   "version": "0.20.2",
   "description": "The open-source visual editor for React",
   "author": "Chris Villa <chris@puckeditor.com>",
-  "repository": "measuredco/puck",
-  "bugs": "https://github.com/measuredco/puck/issues",
+  "repository": "wlenig/puck",
+  "bugs": "https://github.com/wlenig/puck/issues",
   "homepage": "https://puckeditor.com",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "keywords": [
     "puck",
     "visual",
